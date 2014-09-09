@@ -33,7 +33,7 @@ func getHosts(client *docker.Client) string {
 func updateConfig(hosts string) {
 	fmt.Println("Updating dnsmasq config")
 	_ = ioutil.WriteFile(DNSMASQ_CONF, []byte(hosts), 0644)
-	exec.Command("systemctl", "restart", "dnsmasq").Start()
+	exec.Command("systemctl", "restart", "dnsmasq").Run()
 
 }
 
