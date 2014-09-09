@@ -1,0 +1,8 @@
+[Unit]
+Description=Poor mans service discovery for docker.
+Documentation=https://github.com/svenwltr/docker-dns
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/docker-dns

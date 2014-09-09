@@ -1,11 +1,11 @@
 
 
-deps:
-	GOPATH=$(shell readlink -f .) go get -d ./...
-
 build:
+	make deps
 	GOPATH=$(shell readlink -f .) go build
 
+deps:
+	GOPATH=$(shell readlink -f .) go get -d ./...
 
 clean:
 	rm -rf src
