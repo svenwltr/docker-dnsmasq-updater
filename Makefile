@@ -2,7 +2,7 @@
 
 build:
 	make deps
-	GOPATH=$(shell readlink -f .) go build
+	GOPATH=$(shell readlink -f .) go build -o docker-dnsmasq-updater
 
 deps:
 	GOPATH=$(shell readlink -f .) go get -d ./...

@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:		docker-dnsmasq-updater
-Version:	0.1
+Version:	%{gitversion}
 Release:	1%{?dist}
 Summary:	Poor mans service discovery for docker.
 
@@ -20,26 +20,24 @@ BuildRequires:	golang
 
 
 %build
+make
 
 
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}/usr/bin
+ls
 install -pm 755 docker-dnsmasq-updater %{buildroot}/usr/bin/%{name}
 
 install -dm 755 %{buildroot}/usr/lib/systemd/system
-install -pm 644 docker-dnsmasq-updater.service %{buildroot}/usr/lib/systemd/system/%{name}.service
+install -pm 644 pkg/rpm/docker-dnsmasq-updater.service %{buildroot}/usr/lib/systemd/system/%{name}.service
 
 
 %files
-#%defattr(-,root,root,-)
-#%{_datadir}/%{name}
-#%doc README.md
+%doc README.md
 /usr/bin/%{name}
 /usr/lib/systemd/system/%{name}.service
-
-
 
 %changelog
 

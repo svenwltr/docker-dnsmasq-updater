@@ -1,25 +1,36 @@
-build:
-	cd ../.. && make
-	tar -cf docker-dnsmasq-updater-0.1.tar docker-dnsmasq-updater.spec
-	tar \
-		--append \
-		--directory ../.. \
-		--transform "s#^#docker-dnsmasq-updater-0.1/#" \
-		--file docker-dnsmasq-updater-0.1.tar \
-		README.md
-	tar \
-		--append \
-		--directory ../.. \
-		--transform "s#^#docker-dnsmasq-updater-0.1/#" \
-		--file docker-dnsmasq-updater-0.1.tar \
-		docker-dnsmasq-updater
-	tar \
-		--append \
-		--transform "s#^#docker-dnsmasq-updater-0.1/#" \
-		--file docker-dnsmasq-updater-0.1.tar \
-		docker-dnsmasq-updater.service
-	gzip -c docker-dnsmasq-updater-0.1.tar  > docker-dnsmasq-updater-0.1.tar.gz
-	rpmbuild -ta docker-dnsmasq-updater-0.1.tar.gz
 
+version=$(shell git describe | tr '-' '.')
+#version=0.2
+name=docker-dnsmasq-updater
+base=$(shell readlink -f ../..)
+build=$(shell readlink -f build)
+srcpkg=$(name)-$(version).tar
+
+build:
+	mkdir -p $(build)
+	cd $(base) && \
+	git archive \
+		--format tar \
+		--prefix=$(name)-$(version)/ \
+		HEAD \
+		> $(build)/$(srcpkg)
+	tar \
+		--append \
+		--file $(build)/$(srcpkg) \
+		docker-dnsmasq-updater.spec
+	# a other spec file causes problems with rpmbuild
+	tar \
+		--delete \
+		--file $(build)/$(srcpkg) \
+		$(name)-$(version)/pkg/rpm/docker-dnsmasq-updater.spec
+	gzip -c $(build)/$(srcpkg) > $(build)/$(srcpkg).gz
+	cd $(build) && rpmbuild \
+		-vv \
+		--clean \
+		--define 'gitversion $(version)' \
+		-ta "$(srcpkg).gz"
+
+clean:
+	rm -rf build
 
 
