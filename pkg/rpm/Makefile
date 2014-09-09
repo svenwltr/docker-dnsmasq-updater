@@ -1,6 +1,5 @@
 
-version=$(shell git describe | tr '-' '.')
-#version=0.2
+version=$(shell git describe --tags | tr '-' '.')
 name=docker-dnsmasq-updater
 base=$(shell readlink -f ../..)
 build=$(shell readlink -f build)
