@@ -1,26 +1,25 @@
 build:
 	cd ../.. && make
-	tar -cf docker-dns-0.1.tar docker-dns.spec
+	tar -cf docker-dnsmasq-updater-0.1.tar docker-dnsmasq-updater.spec
 	tar \
 		--append \
 		--directory ../.. \
-		--transform "s#^#docker-dns-0.1/#" \
-		--file docker-dns-0.1.tar \
+		--transform "s#^#docker-dnsmasq-updater-0.1/#" \
+		--file docker-dnsmasq-updater-0.1.tar \
 		README.md
 	tar \
 		--append \
 		--directory ../.. \
-		--transform "s#^#docker-dns-0.1/#" \
-		--file docker-dns-0.1.tar \
-		docker-dns
+		--transform "s#^#docker-dnsmasq-updater-0.1/#" \
+		--file docker-dnsmasq-updater-0.1.tar \
+		docker-dnsmasq-updater
 	tar \
 		--append \
-		--directory ../../init/systemd \
-		--transform "s#^#docker-dns-0.1/#" \
-		--file docker-dns-0.1.tar \
-		docker-dns.service
-	gzip -c docker-dns-0.1.tar  > docker-dns-0.1.tar.gz
-	rpmbuild -ta docker-dns-0.1.tar.gz
+		--transform "s#^#docker-dnsmasq-updater-0.1/#" \
+		--file docker-dnsmasq-updater-0.1.tar \
+		docker-dnsmasq-updater.service
+	gzip -c docker-dnsmasq-updater-0.1.tar  > docker-dnsmasq-updater-0.1.tar.gz
+	rpmbuild -ta docker-dnsmasq-updater-0.1.tar.gz
 
 
 

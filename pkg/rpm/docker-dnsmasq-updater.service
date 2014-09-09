@@ -1,8 +1,8 @@
 [Unit]
 Description=Poor mans service discovery for docker.
-Documentation=https://github.com/svenwltr/docker-dns
+Documentation=https://github.com/svenwltr/docker-dnsmasq-updater
 After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStart=/usr/bin/docker-dns
+ExecStart=/usr/bin/docker-dnsmasq-updater

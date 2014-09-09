@@ -1,5 +1,5 @@
-docker-dns
-==========
+docker-dnsmasq-updater
+======================
 
 Poor mans service discovery for docker.
 
@@ -15,7 +15,7 @@ Requirements
 Usage
 -----
 
-    sudo docker-dns
+    sudo docker-dnsmasq-updater
 
 Programm will listen to docker events and updates dnsmasq config on host change.
 
