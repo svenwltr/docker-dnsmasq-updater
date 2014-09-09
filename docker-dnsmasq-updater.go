@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os/exec"
 	"strings"
 
@@ -16,13 +17,18 @@ const (
 
 func getHosts(client *docker.Client) string {
 	opts := docker.ListContainersOptions{}
-	containers, _ := client.ListContainers(opts)
+	containers, err := client.ListContainers(opts)
+
+	if err != nil {
+		log.Fatal("Unable to list containers: ", err)
+	}
 
 	var lines []string
 
 	for _, container := range containers {
 		inspect, _ := client.InspectContainer(container.ID)
-		lines = append(lines, fmt.Sprintf("address=%s.test/%s", inspect.Name, inspect.NetworkSettings.IPAddress))
+		lines = append(lines, fmt.Sprintf("address=%s.test/%s", inspect.Name,
+			inspect.NetworkSettings.IPAddress))
 
 	}
 
@@ -31,17 +37,34 @@ func getHosts(client *docker.Client) string {
 }
 
 func updateConfig(hosts string) {
-	fmt.Println("Updating dnsmasq config")
-	_ = ioutil.WriteFile(DNSMASQ_CONF, []byte(hosts), 0644)
-	exec.Command("systemctl", "restart", "dnsmasq").Run()
+	log.Print("Updating dnsmasq config")
+	var err error
+
+	err = ioutil.WriteFile(DNSMASQ_CONF, []byte(hosts), 0644)
+	if err != nil {
+		log.Print("ERROR: unable to write dnsmasq config: ", err)
+	}
+
+	err = exec.Command("systemctl", "restart", "dnsmasq").Run()
+	if err != nil {
+		log.Print("ERROR: unable to restart dnsmasq: ", err)
+	}
 
 }
 
 func main() {
-	client, _ := docker.NewClient(ENDPOINT)
+	var err error
+	client, err := docker.NewClient(ENDPOINT)
+
+	if err != nil {
+		log.Fatal("Unable to initialize Docker client. ", err)
+	}
 
 	listener := make(chan *docker.APIEvents, 10)
-	_ = client.AddEventListener(listener)
+	err = client.AddEventListener(listener)
+	if err != nil {
+		log.Fatal("Unable to initialize Docker event listener: ", err)
+	}
 
 	var newHosts string
 	var oldHosts string

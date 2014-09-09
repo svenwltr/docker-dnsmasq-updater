@@ -12,5 +12,5 @@ clean:
 
 
 run:
-	GOPATH=$(shell readlink -f .) go run update-dnsmasq-updater.go
+	GOPATH=$(shell readlink -f .) go run docker-dnsmasq-updater.go
 
