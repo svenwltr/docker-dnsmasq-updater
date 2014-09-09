@@ -74,7 +74,7 @@ func main() {
 
 	for {
 		select {
-		case msg := <-listener:
+		case _ = <-listener:
 			newHosts = getHosts(client)
 
 			if newHosts != oldHosts {
