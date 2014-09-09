@@ -75,7 +75,6 @@ func main() {
 	for {
 		select {
 		case msg := <-listener:
-			fmt.Printf("%d: %s %s\n", msg.Time, msg.Status, msg.ID)
 			newHosts = getHosts(client)
 
 			if newHosts != oldHosts {
