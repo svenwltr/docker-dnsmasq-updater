@@ -6,3 +6,6 @@ Requires=docker.service
 
 [Service]
 ExecStart=/usr/bin/docker-dnsmasq-updater
+
+[Install]
+WantedBy=multi-user.target
