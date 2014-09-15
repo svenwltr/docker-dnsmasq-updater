@@ -3,6 +3,12 @@ docker-dnsmasq-updater
 
 Poor mans service discovery for docker.
 
+Why?
+----
+
+I use this tool for my dev workstation. So, I don't have to care about ports or IP addresses of my containers.
+
+
 Requirements
 ------------
 
